@@ -79,7 +79,7 @@ function ResultsTable() {
         {drawTimes.map((drawTime, index) => (
           <tr key={drawTime} className={getRowClassName(results[index])}>
             <td className='border-2'>{drawTime}</td>
-            <td className='border-2'>{results[index] }</td>
+            <td className='border-2'>{results[index] || '-' }</td>
           </tr>
         ))}
       </tbody>

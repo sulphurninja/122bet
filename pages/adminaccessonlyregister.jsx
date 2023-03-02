@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React, { useContext, useState } from 'react'
 import { DataContext } from '../store/GlobalState'
 import { postData } from '../utils/fetchData'
@@ -7,7 +8,7 @@ function register() {
     const [userData, setUserData] = useState(initialState)
     const { userName, password } = userData
     const { state, dispatch } = useContext(DataContext)
-    
+    const { auth = {} } = state
     const handleChangeInput = e => {
         const { name, value } = e.target
         setUserData({ ...userData, [name]: value })
@@ -19,8 +20,12 @@ function register() {
 
         console.log(res)
     }
+
     return (
         <body>
+        <Link href='/admin'>
+        <h1 className='font-bold text-xl cursor-pointer mt-4'>🔙 <span className='hover:underline'>Back To Admin Panel</span></h1>
+        </Link>
             <div className="w-full max-w-xs ml-auto mr-auto items-center mt-[100px]">
                 <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
                     <div className="mb-4">

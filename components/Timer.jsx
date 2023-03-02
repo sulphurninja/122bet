@@ -30,10 +30,10 @@ export default function Time() {
     const nextToDrawtime = nextToDraw.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     return (
-        <div className="text-2xl ">
+        <div className="lg:text-2xl ">
             <div className="flex justify-between items-center  text-white font-bold ">
-                <p className="text-yellow-200  flex  items-center">
-                    {timeToDraw}
+                <p className="text-yellow-200 mt-4 flex  items-center">
+                ⏳ {timeToDraw}
                 </p>
             </div>
         </div>

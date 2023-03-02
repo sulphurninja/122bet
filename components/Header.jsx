@@ -92,14 +92,27 @@ const pageReload = () => {
     }
   }, [auth])
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const fullScreenButton = () => {
+    if (!isFullScreen) {
+      document.documentElement.requestFullscreen();
+      setIsFullScreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
+  };
+
+
   return (
     <div className='w-full bg-black  border-white border-b-2  '>
       <div className='w-full flex justify-between ' >
         <div className='bg-black  h-[70px] '>
-          <h1 className='font-bold  text-2xl font-mono  text-white' id='balance'>Balance: {balance}</h1>
+          <h1 className='font-bold mt-4 lg:text-2xl font-mono  text-white' id='balance'>🪙 Balance: {balance}</h1>
         </div>
-        <div className='bg-black text-2xl  w-[250px] h-[70px] '>
-          <h1 id="currentTime" className='text-white  font-mono'> Draw: {nextToDrawtime}</h1>
+        <div className='bg-black lg:text-2xl  w-[250px] h-[70px] '>
+          <h1 id="currentTime" className='text-white mt-4 font-mono'>⏲️ Draw: {nextToDrawtime}</h1>
         </div>
 
         <div className='flex bg-black justify-between'>
@@ -108,9 +121,10 @@ const pageReload = () => {
 
         <div className='flex mt-[10px]  '>
           <div className='flex space-x-5 '>
-            <Link href='/rules'><img className=' h-[40px]' src='/question.png' /></Link>
-            <img  onClick={pageReload} className='cursor-pointer h-[40px]' src='/refresh.png' />
-            <img className='cursor-pointer h-[40px]' src='/close.png' onClick={() =>{ buttonClickSound4.play(); handleCloseClick();}} />
+          <h1 onClick={fullScreenButton} className='cursor-pointer hidden lg:text-3xl lg:block'>🖥️</h1>
+            <Link href='/rules'><img className=' lg:h-[40px] h-[20px]' src='/question.png' /></Link>
+            <img  onClick={pageReload} className='cursor-pointer h-[20px] lg:h-[40px]' src='/refresh.png' />
+            <img className='cursor-pointer h-[20px] lg:h-[40px]' src='/close.png' onClick={() =>{ buttonClickSound4.play(); handleCloseClick();}} />
           </div>
         </div>
       </div>
