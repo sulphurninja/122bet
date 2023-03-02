@@ -17,6 +17,7 @@ const AdminDashBoard = () => {
     <Link href='/bet'>
     <h1 className='text-black cursor-pointer absolute font-bold text-5xl'> 🔙 <span className='hover:underline '>Bet Page</span></h1>
     </Link>
+    
     <h1 className='text-black text-5xl  ml-auto flex  absolute mt-[20%] pl-28 font-bold'>You are not authorized to view this page bitch!</h1>
     </div>
     </main>;

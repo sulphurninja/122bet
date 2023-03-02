@@ -36,9 +36,15 @@ function login() {
         localStorage.setItem('firstLogin', true)
     }
 
-    useEffect(()=>{
-        if(Object.keys(auth).length !==0) router.push("/bet")
-    }, [auth])
+    useEffect(() => {
+        if (Object.keys(auth).length !== 0) {
+          if (auth.user.role === 'admin') {
+            router.push("/admin");
+          } else {
+            router.push("/bet");
+          }
+        }
+      }, [auth]);
 
   return (
     <div className='bg-black'>
