@@ -70,7 +70,6 @@ console.log(nextToDrawtime)
           {number || index + 1}
         </button>
       ))}
-      <HandleResults />
       <Modal isOpen={showModalResult} onClose={() => setShowModalResult(false)} />
     </main>
   );
