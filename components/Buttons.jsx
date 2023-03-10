@@ -28,7 +28,15 @@ const MyButtons = () => {
      const router = useRouter()
      const [isModalOpen, setIsModalOpen] = useState(false);
 
+     const [userName, setUserName] = useState("");
 
+     useEffect(() => {
+       if (auth && auth.user && auth.user.userName) {
+         setUserName(auth.user.userName);
+       }
+       console.log(userName, "this is my user bitch")
+     }, [auth]);
+     
 
      console.log(numberBets)
      const handleAmountClick = (amount) => {
@@ -56,20 +64,31 @@ const MyButtons = () => {
                transform: 'translate(-50%, -50%)',
           },
      };
+
+     useEffect(() => {
+          if(userName){
+          if (Object.keys(auth).length > 0) {
+               axios.get(`/api/user/balance?userName=${userName}`)
+                    .then(response => {
+                         setBalance(response.data.balance)
+                         
+                         console.log("trying to fetch balance", balance)
+                    })
+                    .catch(error => console.error(error))
+          }
+          }
+     }, [userName])
+
      const handlePlaceBets = async () => {
           if(totalAmount== 0){
                return;
           }else{
           try {
                // Deduct the totalAmount from the user's balance
-               const updatedBalance = auth.user.balance - totalAmount;
-               const updatedAuth = { user: { ...auth.user, balance: updatedBalance } };
-
                if (balance < totalAmount) {
                     setIsModalOpen(true);
                } else {
-                    await axios.post('/api/pushBets', { numberBets, totalAmount, auth: updatedAuth });
-
+                    await axios.post('/api/pushBets', { numberBets, totalAmount, userName });
                     console.log('Bets published successfully!');
                     router.push('/Ticket');
                }
@@ -98,15 +117,7 @@ const MyButtons = () => {
           router.push('/login')
      }
 
-     useEffect(() => {
-          if (Object.keys(auth).length > 0) {
-               axios.get(`/api/user/balance?userName=${auth.user.userName}`)
-                    .then(response => {
-                         setBalance(response.data.balance)
-                    })
-                    .catch(error => console.error(error))
-          }
-     }, [auth])
+    
 
      const getCircleContent = (number) => {
           const amount = numberBets[number] || 0;

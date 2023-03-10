@@ -15,8 +15,8 @@ export default async function handler(req, res) {
     await client.connect();
     const db = client.db('test');
     const collection = db.collection('bets');
-    const { numberBets, totalAmount } = req.body;
-    const userName = req.body.auth.user.userName; // extract username from request body
+    const { numberBets, totalAmount, userName } = req.body;
+  
 
     const user = await Users.findOne({ userName });
     if (!user) {

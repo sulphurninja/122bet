@@ -29,6 +29,14 @@ const Ticket = () => {
 
 
 
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    if (auth && auth.user && auth.user.userName) {
+      setUserName(auth.user.userName);
+    }
+    console.log(userName, "this is my user bitch")
+  }, [auth]);
 
   // Generate the barcode string
 
@@ -101,16 +109,6 @@ const Ticket = () => {
     return () => clearInterval(interval);
   }, [])
 
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch('/api/fetchResult');
-      const data = await res.json();
-      setResults(data);
-    }
-    fetchData();
-  }, []);
 
   // fetch the winning number
   const [winningNumber, setUpcomingWinningNumber] = useState('');
@@ -190,26 +188,22 @@ const Ticket = () => {
 
   // Fetch the user's bets
   useEffect(() => {
-    const fetchNumberBets = async () => {
-      try {
-        const timestamp = new Date().getTime();
-        const response = await axios.get(`/api/fetchBets?userName=${auth.user.userName}& timestamp=${timestamp}`);
-        if (response && response.data) {
-          setNumberBets(response.data.data);
-          console.log("check", response.data.data)
-        } else {
-          setTimeout(() => {
-            fetchNumberBets();
-          }, 5000);
+    if (userName) {
+      const fetchNumberBets = async () => {
+        try {
+          const timestamp = new Date().getTime();
+          const response = await axios.get(`/api/fetchBets?userName=${userName}&timestamp=${timestamp}`);
+          if (response && response.data) {
+            setNumberBets(response.data.data);
+            console.log("check", response.data.data)
+          } 
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    console.log(numberBets)
-
-    fetchNumberBets();
-  }, [auth]);
+      };
+      fetchNumberBets();
+    }
+  }, [userName]);
 
   useEffect(() => {
     console.log(numberBets)
@@ -221,7 +215,7 @@ const Ticket = () => {
     setTimeout(() => {
       window.print();
 
-    }, 5000);
+    }, 2000);
 
   },
     []);
@@ -229,7 +223,7 @@ const Ticket = () => {
     setTimeout(() => {
       Router.push('/bet')
 
-    }, 8000);
+    }, 3000);
 
   },
     []);
