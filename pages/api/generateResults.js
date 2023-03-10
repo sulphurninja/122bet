@@ -1,48 +1,34 @@
-import { MongoClient } from 'mongodb';
+import fs from 'fs';
+import path from 'path';
 
 export default async function handler(req, res) {
-  // Set up the connection URL and database name
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, { useUnifiedTopology: true });
-  const dbName = 'test';
+  const filePath = path.join(process.cwd(), 'data', 'fetchResults.json');
 
-  // Connect to the database
-  try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection('fetchResults');
+  // Generate the list of draw times
+  const startHour = 1;
+  const startMinute = 0;
+  const interval = 5;
+  const numDraws = 288;
 
-    // Generate the list of draw times
-    const startHour = 1;
-    const startMinute = 0;
-    const interval = 5;
-    const numDraws = 288;
-
-    const drawTimes = [];
-    for (let hour = startHour; hour <= 12; hour++) {
-      for (let minute = startMinute; minute < 60; minute += interval) {
-        drawTimes.push(`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} AM`);
-        drawTimes.push(`${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} PM`);
-      }
+  const drawTimes = {};
+  for (let hour = startHour; hour <= 12; hour++) {
+    for (let minute = startMinute; minute < 60; minute += interval) {
+      const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+      drawTimes[`${time} AM`] = null;
+      drawTimes[`${time} PM`] = null;
     }
-
-    // Generate and insert the documents
-    const docs = [];
-    for (let i = 0; i < numDraws; i++) {
-      const doc = {
-        winningNumber: Math.floor(Math.random() * 12) + 1,
-        drawTime: drawTimes[i]
-      };
-      docs.push(doc);
-    }
-
-    await collection.insertMany(docs);
-    console.log('Documents inserted successfully');
-
-    res.status(200).json({ message: 'Documents inserted successfully' });
-  } catch (err) {
-    console.log('Error connecting to database:', err);
-  } finally {
-    await client.close();
   }
+
+  // Generate the list of documents
+  const data = {};
+  for (let i = 0; i < numDraws; i++) {
+    const winningNumber = Math.floor(Math.random() * 12) + 1;
+    const drawTime = Object.keys(drawTimes)[i];
+    data[drawTime] = winningNumber;
+  }
+
+  // Write the data to the JSON file
+  fs.writeFileSync(filePath, JSON.stringify(data));
+
+  res.status(200).json({ message: 'Data saved successfully' });
 }

@@ -80,6 +80,7 @@ const MyButtons = () => {
      }
      };
 
+
      const InsufficientBalanceModal = ({ isOpen, onClose }) => {
           return (
                <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles}>
@@ -141,14 +142,14 @@ const MyButtons = () => {
                     <div className="grid grid-cols-4 gap-4 gap-x-20  mt-1 justify-items-center ml-[5%]  text-lg mx-auto">
 
                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(number => (
-                              <div className='cursor-pointer' onClick={() =>{ buttonClickSound3.play(); handleNumberClick(number)}}>
+                              <div className='cursor-pointer' onClick={() => { buttonClickSound3.play(); handleNumberClick(number) }}>
                                    <div>
                                         <div className="text-center text-white  bg-black text- mt-2">{getCircle()}</div>
                                         <div
                                              key={number}
                                              className={`rounded-full lg:h-28 lg:w-28 h-14  w-14 text-2xl  flex items-center justify-center cursor-pointer
             ${[1, 5, 9].includes(number) ? 'bg-red-500' : [3, 7, 11].includes(number) ? 'bg-green-500' : [2, 6, 10].includes(number) ? 'bg-yellow-500' : 'bg-blue-500'}`}
-                                             onClick={() => { buttonClickSound3.play(); handleNumberClick(number);}}
+                                             onClick={() => { buttonClickSound3.play(); handleNumberClick(number); }}
                                         >
                                              <span className="text-black text-4xl font-bold pb-[60px]">{number}</span>
                                              <div className="text-center text-white bg-black text-xl mt-2">{getCircleContent(number)}</div>
@@ -159,7 +160,7 @@ const MyButtons = () => {
                          <div className="col-span-4 ">
                               <div className="flex absolute justify-center">
                                    {[10, 20, 30, 100, 500].map(amount => (
-                                        <img key={amount} onClick={() =>{ buttonClickSound3.play(); handleAmountClick(amount);}} className={`h-20 mx-2 my-4 cursor-pointer  w-full  ${amount === selectedAmount ? 'border-[10px] rounded-full border-white' : ''}`} src={`/${amount}.png`} />
+                                        <img key={amount} onClick={() => { buttonClickSound3.play(); handleAmountClick(amount); }} className={`h-20 mx-2 my-4 cursor-pointer  w-full  ${amount === selectedAmount ? 'border-[10px] rounded-full border-white' : ''}`} src={`/${amount}.png`} />
                                    ))}
 
                               </div>
@@ -170,7 +171,7 @@ const MyButtons = () => {
                <div className='w-[30%]'>
                     <div className='text-white font-bold   border-amber-200 rounded-lg  '>
                          <h1 className='text-white font-bold mx-32 text-2xl'>Total: {totalAmount}</h1>
-                         <button className="bg-red-200 rounded-full mx-32 my-8 w-24 h-24    text-black    font-bold py-2 px-4 " onClick={() => {buttonClickSound2.play(); handlePlaceBets();}}><img className='w-16 h-16' src='/print.png' /> </button>
+                         <button className="bg-red-200 rounded-full mx-32 my-8 w-24 h-24    text-black    font-bold py-2 px-4 " onClick={() => { buttonClickSound2.play(); handlePlaceBets(); }}><img className='w-16 h-16' src='/print.png' /> </button>
                          <InsufficientBalanceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                          <button className='bg-red-400 rounded-full mx-32 my-8 w-24 h-24  text-black font-bold py-2 px-4' onClick={() => {
                               buttonClickSound.play();

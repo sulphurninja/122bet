@@ -139,18 +139,18 @@ const Ticket = () => {
     ) {
       prevDrawTime.current = drawTime;
 
-      const fetchWinningNumber = async () => {
-
-
+      async function fetchWinningNumber() {
         try {
-          const response = await axios.get(`/api/getWinningNumber/?drawTime=${drawTime}`);
+          const response = await axios.get(`/api/getWinningNumber?drawTime=${drawTime}`);
           setUpcomingWinningNumber(response.data.winningNumber);
-        } catch (err) {
-          console.log('Error fetching winning number:', err);
+        
+        } catch (error) {
+          console.log('Error fetching winning number:', error);
+          return null;
         }
-      };
+      }
       fetchWinningNumber();
-      console.log(winningNumber)
+      console.log(winningNumber, drawTime, "WINNINGNUMBER AND DRAWTIME")
     }
   });
 
@@ -219,21 +219,21 @@ const Ticket = () => {
 
   useEffect(() => {
     setTimeout(() => {
-    window.print();
-     
+      window.print();
+
     }, 5000);
-  
-  }, 
-  []);
+
+  },
+    []);
   useEffect(() => {
     setTimeout(() => {
       Router.push('/bet')
-     
+
     }, 8000);
-  
-  }, 
-  []);
- 
+
+  },
+    []);
+
 
 
   return (

@@ -1,34 +1,27 @@
-import { MongoClient } from 'mongodb';
+import fs from 'fs';
+import path from 'path';
 
 export default async function handler(req, res) {
-  // Set up the connection URL and database name
-  const uri = process.env.MONGODB_URI;
-  const client = new MongoClient(uri, { useUnifiedTopology: true });
-  const dbName = 'test';
-
-  // Connect to the database
   try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection('fetchResults');
-
-    // Extract the draw time from the request payload
+    // Extract the draw time from the request query parameters
     const { drawTime } = req.query;
 
-    // Find the document with the corresponding draw time
-    const result = await collection.findOne({ drawTime: { $eq: drawTime } });
-   
-    // If a document is found, return the winning number
-    if (result) {
-      res.status(200).json({ winningNumber: result.winningNumber });
+    // Read the winning numbers from the JSON file
+    const filePath = path.join(process.cwd(), 'data', 'fetchResults.json');
+    const jsonData = fs.readFileSync(filePath);
+    const winningNumbers = JSON.parse(jsonData);
+
+    // Find the winning number for the corresponding draw time
+    const winningNumber = winningNumbers[drawTime];
+
+    // If a winning number is found, return it
+    if (winningNumber) {
+      res.status(200).json({ winningNumber });
     } else {
       res.status(404).json({ message: `No winning number found for draw time: ${drawTime}` });
     }
-
   } catch (err) {
-    console.log('Error connecting to database:', err);
-    res.status(500).json({ message: 'Error connecting to database' });
-  } finally {
-    await client.close();
+    console.log('Error reading winning numbers from JSON file:', err);
+    res.status(500).json({ message: 'Error reading winning numbers from JSON file' });
   }
 }

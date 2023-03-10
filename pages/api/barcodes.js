@@ -2,11 +2,16 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 import Users from '../../models/userModel'
+const fs = require('fs');
+const path = require('path');
 
 export default async function handler(req, res) {
   try {
+
     if (req.method === 'POST') {
       const { numberBets, drawTime, winningNumber, barcodeValue } = req.body
+
+
       await client.connect();
       const db = client.db('test');
       let winningAmount = 0;
@@ -22,6 +27,17 @@ export default async function handler(req, res) {
         created: new Date()
       })
 
+      const data = {
+        winningNumber: winningNumber,
+        numberBets: numberBets,
+        drawTime: drawTime,
+        barcodeValue: barcodeValue,
+        winningAmount: winningAmount
+      };
+      const filePath = path.join(process.cwd(), 'data', 'barcodes.json');
+      fs.writeFileSync(filePath, JSON.stringify(data));
+
+
       res.status(200).json({ id: result.insertedId })
     } else if (req.method === 'GET') {
       await client.connect();
@@ -32,7 +48,7 @@ export default async function handler(req, res) {
       if (!barcode) {
         res.status(400).json({ message: 'Barcode is required' });
         return;
-      }console.log(barcode)
+      } console.log(barcode)
       const resultz = await db.collection('barcodes').findOne({ barcodeValue: barcode });
 
       if (!resultz) {
@@ -57,7 +73,7 @@ export default async function handler(req, res) {
     } else {
       res.status(405).json({ message: 'Method Not Allowed' });
     }
-   
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server Error' });

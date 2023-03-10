@@ -1,6 +1,9 @@
-import { MongoClient } from 'mongodb';
+import fs from 'fs';
+import path from 'path';
 import Users from '../../models/userModel';
+import { MongoClient } from 'mongodb';
 
+const dataFilePath = path.join(process.cwd(), 'data', 'bets.json');
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -14,7 +17,6 @@ export default async function handler(req, res) {
     const collection = db.collection('bets');
     const { numberBets, totalAmount } = req.body;
     const userName = req.body.auth.user.userName; // extract username from request body
-
 
     const user = await Users.findOne({ userName });
     if (!user) {

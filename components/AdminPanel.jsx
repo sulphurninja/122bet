@@ -5,6 +5,7 @@ import HandleResults from '../components/HandleResults';
 import Header from "../components/Header";
 import Modal from '../components/ModalResult'
 import { DataContext } from '../store/GlobalState';
+import GenerateResultsButton from './GenerateResults';
 
 const AdminPanel = () => {
 
@@ -130,7 +131,7 @@ const AdminPanel = () => {
 
             </div>
             <Modal isOpen={showModalResult} onClose={() => setShowModalResult(false)} />
-
+            <GenerateResultsButton />
         </main>
 
     );

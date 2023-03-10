@@ -4,9 +4,13 @@ import Easylogout from '../components/Easylogout'
 const Logout = () => {
   return (
     <div>
-    <Easylogout/>
+      <Easylogout />
     </div>
   )
 }
 
 export default Logout
+
+
+
+
