@@ -1,9 +1,6 @@
-import fs from 'fs';
-import path from 'path';
 import Users from '../../models/userModel';
 import { MongoClient } from 'mongodb';
 
-const dataFilePath = path.join(process.cwd(), 'data', 'bets.json');
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -28,11 +25,10 @@ export default async function handler(req, res) {
     }
     else {
       const result = await collection.insertOne({ numberBets, totalAmount, userName });
-      res.status(200).json({ success: true, data: result });
       user.balance -= totalAmount;
       await user.save();
 
-      return res.status(200).json({ balance: user.balance });
+      return res.status(200).json({ success: true, data: result, balance: user.balance });
     }
   } catch (error) {
     console.error(error);

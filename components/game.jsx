@@ -15,7 +15,22 @@ function bet() {
     const [winningAmount, setWinningAmount] = useState(null);
     const [showModal, setShowModal] = useState(false)
     const router = useRouter()
+    const [hasReloaded, setHasReloaded] = useState(false);
 
+    useEffect(() => {
+        const hasReloadedStorage = localStorage.getItem('hasReloaded');
+        if (!hasReloadedStorage) {
+          localStorage.setItem('hasReloaded', 'true');
+          setHasReloaded(true);
+          window.location.reload();
+        }
+        
+        return () => {
+          localStorage.removeItem('hasReloaded');
+          setHasReloaded(false);
+        };
+      }, []);
+    
     const handleBarcodeChange = (event) => {
         setBarcode(event.target.value);
     };
@@ -69,7 +84,7 @@ function bet() {
                 <form onSubmit={handleBarcodeSubmit}>
                     <label htmlFor="barcode">Enter barcode:</label>
                     <div className=''>
-                        <input type="text" value={barcode}
+                        <input type="text" value={barcode || ''}
                             onChange={(e) => setBarcode(e.target.value)}
                             placeholder='Scan or Enter the barcode' className='bg-white  border-4 border-green-500 text-center h-[10%]  rounded-3xl ' />
                     </div>
