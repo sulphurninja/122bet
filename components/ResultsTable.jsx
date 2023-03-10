@@ -36,18 +36,37 @@ function ResultsTable() {
 
     setDrawTimes(drawTimes);
 
-    const intervalId = setInterval(() => {
-      Promise.all(drawTimes.map(drawTime => (
-        fetch(`/api/getPrior?drawTime=${drawTime}`).then(res => res.json())
-      ))).then(results => {
-        setResults(results.map(result => (result.winningNumber)));
+    const fetchResults = async (drawTime) => {
+      const response = await fetch(`/api/getPrior?drawTime=${drawTime}`);
+      const result = await response.json();
+      return result.winningNumber;
+    }
+  
+    const checkForNewResults = () => {
+      const now = new Date();
+      const currentDrawTime = drawTimes.find(drawTime => {
+        const [hours, minutes] = drawTime.split(':');
+        const drawTimeDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+        return drawTimeDate <= now;
       });
-    }, 20000);
+  
+      if (currentDrawTime) {
+        fetchResults(currentDrawTime).then(newResult => {
+          setResults(prevResults => [...prevResults.slice(1), newResult]);
+        });
+      }
+    };
+  
+    checkForNewResults();
+  
+    const intervalId = setInterval(() => {
+      checkForNewResults();
+    }, 1000);
+  
     return () => {
-      clearInterval(timer);
       clearInterval(intervalId);
     }
-  }, [nextToDrawtime, timeToDraw, results]);
+  }, []);
 
   const getRowClassName = (winningNumber) => {
     if (winningNumber === 1 || winningNumber === 5 || winningNumber === 9) {
@@ -79,7 +98,7 @@ function ResultsTable() {
         {drawTimes.map((drawTime, index) => (
           <tr key={drawTime} className={getRowClassName(results[index])}>
             <td className='border-2'>{drawTime}</td>
-            <td className='border-2'>{results[index] || '-' }</td>
+            <td className='border-2'>{index < results.length ? results[index] : '-'}</td>
           </tr>
         ))}
       </tbody>

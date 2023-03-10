@@ -84,7 +84,7 @@ function bet() {
                 <form onSubmit={handleBarcodeSubmit}>
                     <label htmlFor="barcode">Enter barcode:</label>
                     <div className=''>
-                        <input type="text" value={barcode || ''}
+                        <input type="text" value={barcode}
                             onChange={(e) => setBarcode(e.target.value)}
                             placeholder='Scan or Enter the barcode' className='bg-white  border-4 border-green-500 text-center h-[10%]  rounded-3xl ' />
                     </div>

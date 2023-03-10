@@ -173,7 +173,7 @@ const Ticket = () => {
         }
 
         try {
-          await axios.post('/api/barcodes', { numberBets, drawTime, winningNumber, barcodeValue, drawTime });
+          await axios.post('/api/barcodes', { numberBets, drawTime, winningNumber, barcodeValue });
           console.log('Barcode generated successfully!');
         } catch (error) {
           console.error('Failed to generate barcode:', error);
