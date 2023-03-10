@@ -42,7 +42,7 @@ function ResultsTable() {
       ))).then(results => {
         setResults(results.map(result => (result.winningNumber)));
       });
-    }, 1000);
+    }, 20000);
     return () => {
       clearInterval(timer);
       clearInterval(intervalId);
