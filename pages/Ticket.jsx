@@ -215,7 +215,7 @@ const Ticket = () => {
     setTimeout(() => {
       window.print();
 
-    }, 2000);
+    }, 5000);
 
   },
     []);
@@ -223,7 +223,7 @@ const Ticket = () => {
     setTimeout(() => {
       Router.push('/bet')
 
-    }, 3000);
+    }, 5000);
 
   },
     []);
