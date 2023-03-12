@@ -90,16 +90,14 @@ function Header() {
   }
 
   useEffect(() => {
-    if (Object.keys(auth).length > 0) {
       if (userName) {
-      axios.get(`/api/user/balance?userName=${auth.user.userName}`)
+      axios.get(`/api/user/balance?userName=${userName}`)
         .then(response => {
           setBalance(response.data.balance)
         })
         .catch(error => console.error(error))
       }
-    }
-  }, [auth, userName])
+  }, [userName])
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
