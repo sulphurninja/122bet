@@ -99,7 +99,7 @@ function Header() {
         .catch(error => console.error(error))
       }
     }
-  }, [auth])
+  }, [auth, userName])
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
