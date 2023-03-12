@@ -17,20 +17,30 @@ function bet() {
     const router = useRouter()
     const [hasReloaded, setHasReloaded] = useState(false);
 
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        if (auth && auth.user && auth.user.userName) {
+            setUserName(auth.user.userName);
+        }
+        console.log(userName, "this is my user bitch")
+    }, [auth]);
+
+
     useEffect(() => {
         const hasReloadedStorage = localStorage.getItem('hasReloaded');
         if (!hasReloadedStorage) {
-          localStorage.setItem('hasReloaded', 'true');
-          setHasReloaded(true);
-          window.location.reload();
+            localStorage.setItem('hasReloaded', 'true');
+            setHasReloaded(true);
+            window.location.reload();
         }
-        
+
         return () => {
-          localStorage.removeItem('hasReloaded');
-          setHasReloaded(false);
+            localStorage.removeItem('hasReloaded');
+            setHasReloaded(false);
         };
-      }, []);
-    
+    }, []);
+
     const handleBarcodeChange = (event) => {
         setBarcode(event.target.value);
     };
@@ -39,7 +49,7 @@ function bet() {
         event.preventDefault();
 
         try {
-            const response = await axios.get(`/api/barcodes?barcodeValue=${barcode}&userName=${auth.user.userName}`);
+            const response = await axios.get(`/api/barcodes?barcodeValue=${barcode}&userName=${userName}`);
             setWinningAmount(response.data.winningAmount);
             setShowModal(true);
             console.log(response.data.winningAmount)
@@ -64,6 +74,7 @@ function bet() {
     }, []);
 
 
+
     return (
 
         <div className='w-screen h-screen relative bg-black'>
@@ -78,7 +89,7 @@ function bet() {
 
                 <div className='flex'>
                     <Buttons />
-                    {/* <ResultsTable /> */}
+                    <ResultsTable />
                 </div>
 
                 <form onSubmit={handleBarcodeSubmit}>

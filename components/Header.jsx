@@ -6,22 +6,22 @@ import axios from 'axios';
 import Timer from '../components/Timer'
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import {Howl} from 'howler'
+import { Howl } from 'howler'
 
 function Header() {
 
   const buttonClickSound4 = new Howl({
     src: ['/logout.mp3'],
-});
+  });
 
-const Router = useRouter();
+  const Router = useRouter();
 
-const pageReload = () => {
+  const pageReload = () => {
 
-  Router.reload()
+    Router.reload()
 
 
-}
+  }
 
   const handleLogoutClick = () => {
     setShowModal(false);
@@ -73,7 +73,14 @@ const pageReload = () => {
     }
   }
 
+  const [userName, setUserName] = useState("");
 
+  useEffect(() => {
+    if (auth && auth.user && auth.user.userName) {
+      setUserName(auth.user.userName);
+    }
+    console.log(userName, "this is my user bitch")
+  }, [auth]);
 
   const handleLogout = () => {
     Cookie.remove('refreshtoken', { path: '/api/auth/refreshToken' })
@@ -84,7 +91,7 @@ const pageReload = () => {
 
   useEffect(() => {
     if (Object.keys(auth).length > 0) {
-      axios.get(`/api/user/balance?userName=${auth.user.userName}`)
+      axios.get(`/api/user/balance?userName=${userName}`)
         .then(response => {
           setBalance(response.data.balance)
         })
@@ -121,10 +128,10 @@ const pageReload = () => {
 
         <div className='flex mt-[10px]  '>
           <div className='flex space-x-5 '>
-          <h1 onClick={fullScreenButton} className='cursor-pointer hidden lg:text-3xl lg:block'>🖥️</h1>
+            <h1 onClick={fullScreenButton} className='cursor-pointer hidden lg:text-3xl lg:block'>🖥️</h1>
             <Link href='/rules'><img className=' lg:h-[40px] h-[20px]' src='/question.png' /></Link>
-            <img  onClick={pageReload} className='cursor-pointer h-[20px] lg:h-[40px]' src='/refresh.png' />
-            <img className='cursor-pointer h-[20px] lg:h-[40px]' src='/close.png' onClick={() =>{ buttonClickSound4.play(); handleCloseClick();}} />
+            <img onClick={pageReload} className='cursor-pointer h-[20px] lg:h-[40px]' src='/refresh.png' />
+            <img className='cursor-pointer h-[20px] lg:h-[40px]' src='/close.png' onClick={() => { buttonClickSound4.play(); handleCloseClick(); }} />
           </div>
         </div>
       </div>

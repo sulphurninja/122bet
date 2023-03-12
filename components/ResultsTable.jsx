@@ -26,7 +26,7 @@ function ResultsTable() {
 
   const getPriorCopy = async (drawTime) => {
     try {
-      const res = await axios.get(`/api/getPriorcopy?drawTime=${drawTime}`);
+      const res = await axios.get(`/api/getPrior?drawTime=${drawTime}`);
       return res.data.winningNumber;
     } catch (error) {
       console.log(error);
