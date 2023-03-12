@@ -66,7 +66,7 @@ const MyButtons = () => {
      };
 
      useEffect(() => {
-    
+          if(userName){
           if (Object.keys(auth).length > 0) {
                axios.get(`/api/user/balance?userName=${userName}`)
                     .then(response => {
@@ -76,7 +76,8 @@ const MyButtons = () => {
                     })
                     .catch(error => console.error(error))
           }
-     }, [])
+          }
+     }, [userName])
 
      const handlePlaceBets = async () => {
           if(totalAmount== 0){
