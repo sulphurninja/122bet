@@ -89,7 +89,7 @@ function bet() {
 
                 <div className='flex'>
                     <Buttons />
-                    <ResultsTable />
+                    {/* <ResultsTable /> */}
                 </div>
 
                 <form onSubmit={handleBarcodeSubmit}>
