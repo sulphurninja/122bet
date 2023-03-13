@@ -70,11 +70,9 @@ function login() {
             </div>
         </form>
         <p className="text-center text-white  text-xs">
-            &copy;Dus Ka Dum - A3M.io
+            &copy;Dus Ka Dum - Deltin Royale Games
         </p>
-        <p className='text-center text-white text-xs'>
-         Inquiries: aditya@a3m.io
-        </p>
+       
     </div>
 </div>
   )
