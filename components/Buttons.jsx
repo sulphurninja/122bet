@@ -24,7 +24,7 @@ const MyButtons = () => {
      const [totalAmount, setTotalAmount] = useState(0)
      const { state = {}, dispatch } = useContext(DataContext)
      const { auth = {} } = state
-     const [balance, setBalance] = useState(0)
+     const [balance, setBalance] = useState()
      const router = useRouter()
      const [isModalOpen, setIsModalOpen] = useState(false);
 
