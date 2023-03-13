@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema({
         default: 0
     },
   
-})
+});
+
+userSchema.index({ userName: 1 });
 
 let User = mongoose.models.user || mongoose.model('user', userSchema)
 export default User

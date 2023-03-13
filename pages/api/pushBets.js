@@ -6,10 +6,10 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+await client.connect();
 
 export default async function handler(req, res) {
   try {
-    await client.connect();
     const db = client.db('test');
     const collection = db.collection('bets');
     const { numberBets, totalAmount, userName } = req.body;
