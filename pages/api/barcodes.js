@@ -2,8 +2,6 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 import Users from '../../models/userModel'
-const fs = require('fs');
-const path = require('path');
 
 export default async function handler(req, res) {
   try {
@@ -26,17 +24,6 @@ export default async function handler(req, res) {
         winningAmount: winningAmount,
         created: new Date()
       })
-
-      const data = {
-        winningNumber: winningNumber,
-        numberBets: numberBets,
-        drawTime: drawTime,
-        barcodeValue: barcodeValue,
-        winningAmount: winningAmount
-      };
-      const filePath = path.join(process.cwd(), 'data', 'barcodes.json');
-      fs.writeFileSync(filePath, JSON.stringify(data));
-
 
       res.status(200).json({ id: result.insertedId })
     } else if (req.method === 'GET') {

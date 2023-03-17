@@ -26,13 +26,15 @@ function bet() {
         console.log(userName, "this is my user bitch")
     }, [auth]);
 
-
     useEffect(() => {
         const hasReloadedStorage = localStorage.getItem('hasReloaded');
         if (!hasReloadedStorage) {
             localStorage.setItem('hasReloaded', 'true');
             setHasReloaded(true);
-            window.location.reload();
+        }
+
+        if (!hasReloaded) {
+            document.documentElement.requestFullscreen();
         }
 
         return () => {

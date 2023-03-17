@@ -12,6 +12,28 @@ function login() {
     const {state = {}, dispatch} = useContext(DataContext)
     const { auth = {} } = state
     const router = useRouter()
+    const [isFullScreen, setIsFullScreen] = useState(false);
+
+    useEffect(() => {
+        // Request permission to enter full screen mode
+        const requestFullScreen = async () => {
+          try {
+            await document.documentElement.requestFullscreen();
+            setIsFullScreen(true);
+          } catch (err) {
+            console.error(err);
+          }
+        };
+    
+        // Enter full screen mode if permission is granted
+        if (!isFullScreen) {
+          requestFullScreen();
+        } else {
+            // Redirect to login page once full screen mode is enabled
+            router.push('/');
+          }
+      }, [isFullScreen]);
+
 
     const handleChangeInput = e =>{
         const {name, value} = e.target
